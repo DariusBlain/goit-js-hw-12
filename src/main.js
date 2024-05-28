@@ -3,7 +3,7 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-import { fetchPhotos } from './js/pixabay-api.js';
+import { serverRequest } from './js/pixabay-api.js';
 
 // ==============================================================
 
@@ -11,6 +11,10 @@ import { fetchPhotos } from './js/pixabay-api.js';
 const formSearch = document.querySelector('.form');
 const gallery = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
+const btnLoad = document.querySelector('.btn-load');
+
+let pageNum = 1;
+let searchQuery = '';
 
 function showLoader() {
   loader.style.display = 'block';
@@ -20,11 +24,20 @@ function hideLoader() {
   loader.style.display = 'none';
 }
 
+function showBtn() {
+  btnLoad.style.visibility = 'visible';
+}
+
+function hideBtn() {
+  btnLoad.style.visibility = 'hidden';
+}
+
 function handleFormSubmit(event) {
   event.preventDefault();
+  pageNum = 1;
   const form = event.target;
 
-  if (form.elements.input.value.trim() === '') {
+  if (!form.elements.input.value.trim()) {
     iziToast.warning({
       theme: 'dark',
       position: 'topRight',
@@ -35,13 +48,24 @@ function handleFormSubmit(event) {
     return;
   }
 
-  const searchQuery = form.elements.input.value.trim();
+  searchQuery = form.elements.input.value.trim();
   gallery.innerHTML = '';
   showLoader();
-  fetchPhotos(searchQuery);
+
+  serverRequest(searchQuery, pageNum);
+}
+
+function handleLoadMore() {
+  pageNum += 1;
+  hideBtn();
+  showLoader();
+  serverRequest(searchQuery, pageNum);
+  loader.classList.add('loader-more');
 }
 
 formSearch.addEventListener('submit', handleFormSubmit);
 
-export { hideLoader };
+btnLoad.addEventListener('click', handleLoadMore);
+
+export { hideLoader, pageNum, showBtn, hideBtn };
 // ==============================================================

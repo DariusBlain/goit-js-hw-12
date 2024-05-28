@@ -26,6 +26,7 @@ function handlePhotoData(photoData) {
 
     return;
   }
+
   const fragment = photoData.hits
     .map(image => {
       const {
@@ -39,33 +40,24 @@ function handlePhotoData(photoData) {
       } = image;
 
       return `<li class="gallery-item hidden">
-          <a class="gallery-link" href="${largeImageURL}">
-            <img
-              class="gallery-image"
-              src="${webformatURL}"
-              alt="${tags}"
-            />
-            <div class="img-descr-container">
-              <p class="img-descr-subtitle">Likes<span class="img-descr-qty">${likes}</span></p>
-              <p class="img-descr-subtitle">Views<span class="img-descr-qty">${views}</span></p>
-              <p class="img-descr-subtitle">Comments<span class="img-descr-qty">${comments}</span></p>
-              <p class="img-descr-subtitle">Downloads<span class="img-descr-qty">${downloads}</span></p>
-            </div>
-          </a>
-        </li>`;
+            <a class="gallery-link" href="${largeImageURL}">
+              <img
+                class="gallery-image"
+                src="${webformatURL}"
+                alt="${tags}"
+              />
+              <div class="img-descr-container">
+                <p class="img-descr-subtitle">Likes<span class="img-descr-qty">${likes}</span></p>
+                <p class="img-descr-subtitle">Views<span class="img-descr-qty">${views}</span></p>
+                <p class="img-descr-subtitle">Comments<span class="img-descr-qty">${comments}</span></p>
+                <p class="img-descr-subtitle">Downloads<span class="img-descr-qty">${downloads}</span></p>
+              </div>
+            </a>
+          </li>`;
     })
     .join('');
 
-  gallery.innerHTML = fragment;
-
-  const items = document.querySelectorAll('.gallery-item');
-  items.forEach((item, index) => {
-    setTimeout(() => {
-      item.classList.remove('hidden');
-      item.classList.add('fade-in');
-    }, index * 100);
-    return;
-  });
+  gallery.insertAdjacentHTML('beforeend', fragment);
 
   if (lightbox) {
     lightbox.refresh();

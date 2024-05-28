@@ -57,6 +57,10 @@ body {
 
 .container {
   padding: 36px 156px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .form {
@@ -105,12 +109,23 @@ body {
   color: #fff;
 }
 
+.btn-load {
+  width: 125px;
+  height: 40px;
+  visibility: hidden;
+}
+/* 
+.btn-load-visible {
+  visibility: visible;
+} */
+
 .btn:hover {
   background-color: #6c8cff;
 }
 
 .gallery {
   margin-top: 32px;
+  margin-bottom: 32px;
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
@@ -176,6 +191,15 @@ body {
   opacity: 0.8;
   display: none;
 }
+
+.loader-more {
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  font-size: 42px;
+}
+
 .loader:before {
   content: '{';
   display: inline-block;
@@ -196,13 +220,4 @@ body {
 
 .simple-lightbox {
   background-color: #2e2f42cc;
-}
-
-.hidden {
-  opacity: 0;
-}
-
-.fade-in {
-  opacity: 1;
-  transition: opacity 0.5s ease-in-out;
 }
