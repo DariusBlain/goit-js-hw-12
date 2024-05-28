@@ -26,8 +26,8 @@ const serverRequest = async (query, pageNum) => {
   fetchPhotos(response.data);
 };
 
-function fetchPhotos(dataSerch) {
-  if (pageNum > dataSerch.totalHits / pageLim) {
+function fetchPhotos(dataSearch) {
+  if (pageNum > dataSearch.totalHits / pageLim) {
     hideBtn();
     hideLoader();
     iziToast.error({
@@ -41,7 +41,7 @@ function fetchPhotos(dataSerch) {
   } else {
     try {
       showBtn();
-      handlePhotoData(dataSerch);
+      handlePhotoData(dataSearch);
     } catch (error) {
       iziToast.error({
         theme: 'dark',
