@@ -23,11 +23,10 @@ function handlePhotoData(photoData) {
         'Sorry, there are no images matching your search query. Please try again!',
     });
     hideLoader();
-
     return;
   }
-  createMarkup(photoData);
   formSearch.reset();
+  createMarkup(photoData);
 }
 
 function createMarkup(data) {

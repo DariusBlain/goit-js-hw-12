@@ -15,7 +15,6 @@ import {
 } from '../main.js';
 
 const loader = document.querySelector('.loader');
-const gallery = document.querySelector('.gallery');
 
 let pageNum = 1;
 let pageLim = 15;
@@ -81,8 +80,11 @@ async function handleLoadMore() {
 
 function requestVerification(data) {
   if (data.totalHits === 0) {
-    throw new Error('No results found');
+    throw new Error(
+      'Sorry, there are no images matching your search query. Please try again!'
+    );
   }
+
   if (pageNum >= Math.ceil(data.totalHits / pageLim)) {
     hideBtn();
     hideLoader();
@@ -92,7 +94,7 @@ function requestVerification(data) {
       backgroundColor: 'rgba(38, 162, 255, 1)',
       message: "We're sorry, but you've reached the end of search results.",
     });
-    return;
+    return data;
   }
   showBtn();
   return data;
