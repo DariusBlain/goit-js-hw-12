@@ -3,7 +3,7 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-import { serverRequest } from './js/pixabay-api.js';
+import { fetchPhotos, handleLoadMore } from './js/pixabay-api.js';
 
 // ==============================================================
 
@@ -13,28 +13,23 @@ const gallery = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
 const btnLoad = document.querySelector('.btn-load');
 
-let pageNum = 1;
 let searchQuery = '';
 
 function showLoader() {
   loader.style.display = 'block';
 }
-
 function hideLoader() {
   loader.style.display = 'none';
 }
-
 function showBtn() {
   btnLoad.style.visibility = 'visible';
 }
-
 function hideBtn() {
   btnLoad.style.visibility = 'hidden';
 }
 
-function handleFormSubmit(event) {
+async function handleFormSubmit(event) {
   event.preventDefault();
-  pageNum = 1;
   const form = event.target;
 
   if (!form.elements.input.value.trim()) {
@@ -52,20 +47,32 @@ function handleFormSubmit(event) {
   gallery.innerHTML = '';
   showLoader();
 
-  serverRequest(searchQuery, pageNum);
-}
-
-function handleLoadMore() {
-  pageNum += 1;
-  hideBtn();
-  showLoader();
-  serverRequest(searchQuery, pageNum);
-  loader.classList.add('loader-more');
+  await fetchPhotos(searchQuery);
 }
 
 formSearch.addEventListener('submit', handleFormSubmit);
 
 btnLoad.addEventListener('click', handleLoadMore);
 
-export { hideLoader, pageNum, showBtn, hideBtn };
+function createScrollFunction() {
+  console.log('scroll');
+  let elem = document.querySelector('.gallery-item');
+  let rect = elem.getBoundingClientRect();
+  if (elem) {
+    window.scrollBy({
+      top: rect.height * 2,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }
+}
+
+export {
+  hideLoader,
+  showLoader,
+  showBtn,
+  hideBtn,
+  createScrollFunction,
+  searchQuery,
+};
 // ==============================================================

@@ -75,4 +75,8 @@ function handlePhotoData(photoData) {
   formSearch.reset();
 }
 
+// ==============================================================
+
+// ==============================================================
+
 export { handlePhotoData };
