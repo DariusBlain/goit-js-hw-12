@@ -4,7 +4,6 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 import { fetchPhotos, handleLoadMore } from './js/pixabay-api.js';
-
 // ==============================================================
 
 // =====================Form-Search=========================================
@@ -55,7 +54,6 @@ formSearch.addEventListener('submit', handleFormSubmit);
 btnLoad.addEventListener('click', handleLoadMore);
 
 function createScrollFunction() {
-  console.log('scroll');
   let elem = document.querySelector('.gallery-item');
   let rect = elem.getBoundingClientRect();
   if (elem) {

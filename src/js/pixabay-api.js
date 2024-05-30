@@ -4,7 +4,7 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import iconError from '../img/error.svg';
 
-import { handlePhotoData } from './render-functions.js';
+import { handlePhotoData, createMarkup } from './render-functions.js';
 import {
   showLoader,
   hideLoader,
@@ -20,7 +20,7 @@ const gallery = document.querySelector('.gallery');
 let pageNum = 1;
 let pageLim = 15;
 
-const serverRequest = async (query, pageNum = 1) => {
+const serverRequest = async (query, pageNum) => {
   const { data } = await axios.get('https://pixabay.com/api', {
     params: {
       key: '43998690-c32ec46c3205eb1d30dd41df5',
@@ -63,7 +63,7 @@ async function handleLoadMore() {
   const data = await serverRequest(searchQuery, pageNum);
   try {
     const verificationsData = requestVerification(data);
-    gallery.insertAdjacentHTML('beforeend', handlePhotoData(verificationsData));
+    gallery.insertAdjacentHTML('beforeend', createMarkup(verificationsData));
     createScrollFunction();
   } catch (err) {
     iziToast.error({

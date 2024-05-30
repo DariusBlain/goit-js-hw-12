@@ -27,7 +27,27 @@ function handlePhotoData(photoData) {
     return;
   }
 
-  const fragment = photoData.hits
+  const fragment = createMarkup(photoData);
+  gallery.insertAdjacentHTML('beforeend', fragment);
+
+  if (lightbox) {
+    lightbox.refresh();
+  } else {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captions: true,
+      captionDelay: 250,
+      captionsData: 'alt',
+      scrollZoom: false,
+    });
+    lightbox.on('error.simplelightbox', function (e) {
+      console.log(e);
+    });
+  }
+  formSearch.reset();
+}
+
+function createMarkup(data) {
+  const fragment = data.hits
     .map(image => {
       const {
         webformatURL,
@@ -56,27 +76,11 @@ function handlePhotoData(photoData) {
           </li>`;
     })
     .join('');
-
-  gallery.insertAdjacentHTML('beforeend', fragment);
-
-  if (lightbox) {
-    lightbox.refresh();
-  } else {
-    lightbox = new SimpleLightbox('.gallery a', {
-      captions: true,
-      captionDelay: 250,
-      captionsData: 'alt',
-      scrollZoom: false,
-    });
-    lightbox.on('error.simplelightbox', function (e) {
-      console.log(e);
-    });
-  }
-  formSearch.reset();
+  return fragment;
 }
 
 // ==============================================================
 
 // ==============================================================
 
-export { handlePhotoData };
+export { handlePhotoData, createMarkup };
