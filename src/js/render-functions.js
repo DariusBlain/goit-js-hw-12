@@ -26,23 +26,7 @@ function handlePhotoData(photoData) {
 
     return;
   }
-
-  const fragment = createMarkup(photoData);
-  gallery.insertAdjacentHTML('beforeend', fragment);
-
-  if (lightbox) {
-    lightbox.refresh();
-  } else {
-    lightbox = new SimpleLightbox('.gallery a', {
-      captions: true,
-      captionDelay: 250,
-      captionsData: 'alt',
-      scrollZoom: false,
-    });
-    lightbox.on('error.simplelightbox', function (e) {
-      console.log(e);
-    });
-  }
+  createMarkup(photoData);
   formSearch.reset();
 }
 
@@ -76,9 +60,23 @@ function createMarkup(data) {
           </li>`;
     })
     .join('');
-  return fragment;
-}
 
+  gallery.insertAdjacentHTML('beforeend', fragment);
+
+  if (lightbox) {
+    lightbox.refresh();
+  } else {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captions: true,
+      captionDelay: 250,
+      captionsData: 'alt',
+      scrollZoom: false,
+    });
+    lightbox.on('error.simplelightbox', function (e) {
+      console.log(e);
+    });
+  }
+}
 // ==============================================================
 
 // ==============================================================

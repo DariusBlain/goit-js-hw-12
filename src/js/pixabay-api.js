@@ -63,7 +63,7 @@ async function handleLoadMore() {
   const data = await serverRequest(searchQuery, pageNum);
   try {
     const verificationsData = requestVerification(data);
-    gallery.insertAdjacentHTML('beforeend', createMarkup(verificationsData));
+    createMarkup(verificationsData);
     createScrollFunction();
   } catch (err) {
     iziToast.error({
