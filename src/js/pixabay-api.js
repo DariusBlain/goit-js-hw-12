@@ -1,25 +1,6 @@
 import axios from 'axios';
 
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
-import iconError from '../img/error.svg';
-
-import { handlePhotoData, createMarkup } from './render-functions.js';
-import {
-  showLoader,
-  hideLoader,
-  showBtn,
-  hideBtn,
-  createScrollFunction,
-  searchQuery,
-} from '../main.js';
-
-const loader = document.querySelector('.loader');
-
-let pageNum = 1;
-let pageLim = 15;
-
-const serverRequest = async (query, pageNum) => {
+const serverRequest = async (query, pageNum, pageLim) => {
   const { data } = await axios.get('https://pixabay.com/api', {
     params: {
       key: '43998690-c32ec46c3205eb1d30dd41df5',
@@ -34,70 +15,4 @@ const serverRequest = async (query, pageNum) => {
   return data;
 };
 
-async function fetchPhotos(searchQuery) {
-  const data = await serverRequest(searchQuery, (pageNum = 1));
-  try {
-    const verificationsData = requestVerification(data);
-    handlePhotoData(verificationsData);
-  } catch (err) {
-    hideBtn();
-    iziToast.error({
-      theme: 'dark',
-      position: 'topRight',
-      progressBarColor: 'rgb(181, 27, 27)',
-      backgroundColor: 'rgb(239, 64, 64)',
-      iconUrl: iconError,
-      message: err.message,
-    });
-  } finally {
-    hideLoader();
-  }
-}
-
-async function handleLoadMore() {
-  loader.classList.add('loader-more');
-  pageNum += 1;
-  hideBtn();
-  showLoader();
-  const data = await serverRequest(searchQuery, pageNum);
-  try {
-    const verificationsData = requestVerification(data);
-    createMarkup(verificationsData);
-    createScrollFunction();
-  } catch (err) {
-    iziToast.error({
-      theme: 'dark',
-      position: 'topRight',
-      progressBarColor: 'rgb(181, 27, 27)',
-      backgroundColor: 'rgb(239, 64, 64)',
-      iconUrl: iconError,
-      message: err.message,
-    });
-  } finally {
-    hideLoader();
-  }
-}
-
-function requestVerification(data) {
-  if (data.totalHits === 0) {
-    throw new Error(
-      'Sorry, there are no images matching your search query. Please try again!'
-    );
-  }
-
-  if (pageNum >= Math.ceil(data.totalHits / pageLim)) {
-    hideBtn();
-    hideLoader();
-    iziToast.info({
-      theme: 'dark',
-      position: 'topRight',
-      backgroundColor: 'rgba(38, 162, 255, 1)',
-      message: "We're sorry, but you've reached the end of search results.",
-    });
-    return data;
-  }
-  showBtn();
-  return data;
-}
-
-export { fetchPhotos, handleLoadMore };
+export { serverRequest };

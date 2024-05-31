@@ -1,33 +1,9 @@
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
-import iconError from '../img/error.svg';
-
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import { hideLoader } from '../main.js';
 
 const gallery = document.querySelector('.gallery');
-const formSearch = document.querySelector('.form');
 
 let lightbox;
-
-function handlePhotoData(photoData) {
-  if (!photoData.hits.length) {
-    iziToast.error({
-      theme: 'dark',
-      position: 'topRight',
-      progressBarColor: 'rgb(181, 27, 27)',
-      backgroundColor: 'rgb(239, 64, 64)',
-      iconUrl: iconError,
-      message:
-        'Sorry, there are no images matching your search query. Please try again!',
-    });
-    hideLoader();
-    return;
-  }
-  formSearch.reset();
-  createMarkup(photoData);
-}
 
 function createMarkup(data) {
   const fragment = data.hits
@@ -80,4 +56,4 @@ function createMarkup(data) {
 
 // ==============================================================
 
-export { handlePhotoData, createMarkup };
+export { createMarkup };
